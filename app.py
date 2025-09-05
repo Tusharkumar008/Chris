@@ -20,9 +20,9 @@ WEBSITE_STRUCTURE = {
         "keywords": ["about", "about us", "who we are", "organization", "foundation", "mission", "vision", "team", "story", "history", "background", "sathish kumar", "director general"],
         "description": "About Pentapolis Foundation",
         "sections": [
-            {"name": "Our Mission", "url": "/about-us#mission"},
-            {"name": "Our Team", "url": "/about-us#team"},
-            {"name": "Director General", "url": "/about-us#director"}
+            {"name": "Our Mission", "url": "/about"},
+            {"name": "Our Team", "url": "/about"},
+            {"name": "Director General", "url": "/about"}
         ]
     },
     "contact": {
@@ -52,7 +52,7 @@ WEBSITE_STRUCTURE = {
         ]
     },
     "reap": {
-        "url": "/reap",
+        "url": "/governance",
         "keywords": ["reap", "reap program", "rural employment", "agriculture", "farming", "rural development"],
         "description": "REAP - Rural Employment and Agriculture Program",
         "sections": [
@@ -62,7 +62,7 @@ WEBSITE_STRUCTURE = {
         ]
     },
     "step": {
-        "url": "/step",
+        "url": "/governance",
         "keywords": ["step", "step program", "skill training", "employment", "job training", "vocational training"],
         "description": "STEP - Skill Training and Employment Program",
         "sections": [
@@ -126,9 +126,9 @@ WEBSITE_STRUCTURE = {
         "keywords": ["donate", "donation", "contribute", "support us", "give", "charity", "fund", "financial support", "contribute"],
         "description": "Support our cause through donations",
         "sections": [
-            {"name": "One-time Donation", "url": "/donate#onetime"},
-            {"name": "Monthly Giving", "url": "/donate#monthly"},
-            {"name": "Corporate Sponsorship", "url": "/donate#corporate"}
+            {"name": "One-time Donation", "url": "/donate"},
+            {"name": "Monthly Giving", "url": "/donate"},
+            {"name": "Corporate Sponsorship", "url": "/donate"}
         ]
     },
     "events": {
@@ -136,15 +136,15 @@ WEBSITE_STRUCTURE = {
         "keywords": ["events", "workshops", "seminars", "conferences", "training sessions", "activities", "calendar"],
         "description": "Upcoming events and workshops",
         "sections": [
-            {"name": "Upcoming Events", "url": "/events#upcoming"},
-            {"name": "Workshop Calendar", "url": "/events#workshops"},
-            {"name": "Past Events", "url": "/events#past"}
+            {"name": "Upcoming Events", "url": "/calendar"},
+            {"name": "Workshop Calendar", "url": "/calendar"},
+            {"name": "Past Events", "url": "/calendar"}
         ]
     },
-    "news": {
-        "url": "/news",
+    "blog": {
+        "url": "/blog",
         "keywords": ["news", "updates", "announcements", "press", "media", "latest", "current"],
-        "description": "Latest news and updates",
+        "description": "Latest blog and updates",
         "sections": []
     },
     "gallery": {
@@ -164,13 +164,13 @@ WEBSITE_STRUCTURE = {
         ]
     },
     "volunteers": {
-        "url": "/volunteers",
+        "url": "/contact",
         "keywords": ["volunteers", "volunteer", "volunteering", "join", "help", "contribute", "support", "get involved"],
         "description": "Volunteer opportunities",
         "sections": [
-            {"name": "Volunteer Roles", "url": "/volunteers#roles"},
-            {"name": "Registration", "url": "/volunteers#register"},
-            {"name": "Volunteer Benefits", "url": "/volunteers#benefits"}
+            {"name": "Volunteer Roles", "url": "/contact"},
+            {"name": "Registration", "url": "/contact"},
+            {"name": "Volunteer Benefits", "url": "/contact"}
         ]
     }
 }
