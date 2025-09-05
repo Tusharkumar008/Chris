@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pentapolis Foundation - CHRIS Assistant</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+        
+        /* Chat Button */
+        .chat-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .chat-button.active {
+            background: #ff4757;
+            transform: rotate(45deg);
+        }
+
+        /* Chat Popup */
+        .chat-popup {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 380px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-popup.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .chat-header h1 {
+            font-size: 20px;
+            margin: 0 0 5px 0;
+        }
+
+        .chat-header p {
+            opacity: 0.9;
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+        .message-content {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            word-wrap: break-word;
+            font-size: 14px;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.bot .message-content {
+            background: white;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 10px;
+            opacity: 0.6;
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        .bot .message-time {
+            text-align: left;
+        }
+
+        .url-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 6px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 13px;
+            transition: all 0.2s;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .url-link:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Section buttons styling */
+        .sections-container {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .sections-title {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .section-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .section-button {
+            background: rgba(102, 126, 234, 0.05);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            width: 100%;
+        }
+
+        .section-button:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .chat-input {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 8px;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            outline: none;
+            font-size: 13px;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            border-color: #667eea;
+        }
+
+        .input-field:disabled {
+            background: #f5f5f5;
+            color: #999;
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .send-button:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+
+        .send-button:active {
+            transform: scale(0.95);
+        }
+
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 10px 14px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 16px;
+            border-bottom-left-radius: 4px;
+            max-width: 85%;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #999;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-8px);
+                opacity: 1;
+            }
+        }
+
+        .welcome-message {
+            text-align: center;
+            padding: 15px;
+            color: #666;
+            font-style: italic;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .page-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .page-suggestion {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .page-suggestion:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Notification Badge */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Error state */
+        .error-message {
+            background: #ffe6e6;
+            border: 1px solid #ffcccc;
+            color: #cc0000;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 480px) {
+            .chat-popup {
+                width: 320px;
+                right: 15px;
+                bottom: 80px;
+                height: 480px;
+            }
+            
+            .chat-button {
+                right: 15px;
+                bottom: 15px;
+                width: 55px;
+                height: 55px;
+                font-size: 22px;
+            }
+        }
+
+        /* Scrollbar styling */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Chat Button -->
+    <button class="chat-button" id="chatButton">
+        💬
+        <span class="notification-badge" id="notificationBadge">!</span>
+    </button>
+
+    <!-- Chat Popup -->
+    <div class="chat-popup" id="chatPopup">
+        <div class="chat-header">
+            <h1>🤖 CHRIS</h1>
+            <p>Pentapolis Foundation Assistant</p>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="welcome-message">
+                👋 Welcome to Pentapolis Foundation!<br>
+                I can help you navigate our website.<br>
+                Try asking: "Where is the donation page?" or "Show me NAPS program"
+            </div>
+        </div>
+
+        <div class="message bot" style="display: none;">
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-input">
+            <input type="text" class="input-field" id="messageInput" placeholder="Ask about website sections..." maxlength="200">
+            <button class="send-button" id="sendButton">
+                ➤
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const chatButton = document.getElementById('chatButton');
+        const chatPopup = document.getElementById('chatPopup');
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const notificationBadge = document.getElementById('notificationBadge');
+
+        let isOpen = false;
+        let isTyping = false;
+
+        // Initialize chatbot
+        function initChatbot() {
+            // Hide notification badge after first interaction
+            setTimeout(() => {
+                if (notificationBadge) {
+                    notificationBadge.style.display = 'none';
+                }
+            }, 3000);
+        }
+
+        // Toggle chat popup
+        function toggleChat() {
+            isOpen = !isOpen;
+            chatButton.classList.toggle('active', isOpen);
+            chatPopup.classList.toggle('show', isOpen);
+            
+            if (isOpen) {
+                messageInput.focus();
+                notificationBadge.style.display = 'none';
+            }
+        }
+
+        // Add message to chat
+        function addMessage(content, isUser = false, timestamp = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            
+            const timeStr = timestamp || new Date().toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    ${content}
+                    <div class="message-time">${timeStr}</div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        // Create page suggestions
+        function createPageSuggestions(pages) {
+            if (!pages || pages.length === 0) return '';
+            
+            const suggestions = pages.map(page => {
+                const displayName = page.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                return `<button class="page-suggestion" onclick="searchPage('${page}')">${displayName}</button>`;
+            }).join('');
+            
+            return `<div class="page-suggestions">${suggestions}</div>`;
+        }
+
+        // Create section buttons
+        function createSectionButtons(sections) {
+            if (!sections || sections.length === 0) return '';
+            
+            const buttons = sections.map(section => 
+                `<button class="section-button" onclick="goToSection('${section.url}')">${section.name}</button>`
+            ).join('');
+            
+            return `
+                <div class="sections-container">
+                    <div class="sections-title">Available sections:</div>
+                    <div class="section-buttons">${buttons}</div>
+                </div>
+            `;
+        }
+
+        // Handle page suggestion clicks
+        function searchPage(pageName) {
+            const displayName = pageName.replace(/_/g, ' ');
+            sendMessage(`Show me ${displayName}`);
+        }
+
+        // Handle section button clicks
+        function goToSection(sectionUrl) {
+            // Open the section URL in the main window
+            window.open(`https://www.pentapolisfoundation.org${sectionUrl}`, '_blank');
+            addMessage(`🔗 Opening section: ${sectionUrl}`, false);
+        }
+
+        // Handle main page URL clicks
+        function goToPage(pageUrl) {
+            // Open the page URL in the main window
+            window.open(`https://www.pentapolisfoundation.org${pageUrl}`, '_blank');
+            addMessage(`🔗 Opening page: ${pageUrl}`, false);
+        }
+
+        // Show typing indicator
+        function showTyping() {
+            isTyping = true;
+            typingIndicator.style.display = 'block';
+            typingIndicator.parentElement.style.display = 'flex';
+            scrollToBottom();
+        }
+
+        // Hide typing indicator
+        function hideTyping() {
+            isTyping = false;
+            typingIndicator.style.display = 'none';
+            typingIndicator.parentElement.style.display = 'none';
+        }
+
+        // Scroll to bottom of chat
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Send message to backend
+        async function sendMessageToBackend(message) {
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Chat error:', error);
+                return {
+                    message: "😅 Sorry, I'm having trouble connecting. Please try again in a moment!",
+                    type: "error",
+                    timestamp: new Date().toLocaleTimeString('en-US', { 
+                        hour12: false, 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                    })
+                };
+            }
+        }
+
+        // Handle bot response
+        function handleBotResponse(response) {
+            let botMessage = response.message;
+            
+            // Add main page link if URL is provided
+            if (response.url) {
+                botMessage += `<br><a href="#" class="url-link" onclick="goToPage('${response.url}')">🔗 Visit ${response.description}</a>`;
+            }
+            
+            // Add sections if available
+            if (response.sections && response.sections.length > 0) {
+                botMessage += createSectionButtons(response.sections);
+            }
+            
+            // Add page suggestions for help/not found responses
+            if (response.pages && response.pages.length > 0 && 
+                ['help', 'not_found', 'search_help', 'greeting'].includes(response.type)) {
+                botMessage += createPageSuggestions(response.pages);
+            }
+            
+            addMessage(botMessage, false, response.timestamp);
+        }
+
+        // Send message
+        async function sendMessage(messageText = null) {
+            const message = messageText || messageInput.value.trim();
+            
+            if (!message) {
+                messageInput.focus();
+                return;
+            }
+
+            // Add user message
+            addMessage(message, true);
+            
+            // Clear input if it was typed
+            if (!messageText) {
+                messageInput.value = '';
+            }
+            
+            // Disable input while processing
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+            
+            // Show typing indicator
+            showTyping();
+            
+            // Send to backend with slight delay for better UX
+            setTimeout(async () => {
+                const response = await sendMessageToBackend(message);
+                
+                // Hide typing indicator
+                hideTyping();
+                
+                // Handle response
+                handleBotResponse(response);
+                
+                // Re-enable input
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                messageInput.focus();
+            }, 800); // Simulate thinking time
+        }
+
+        // Event listeners
+        chatButton.addEventListener('click', toggleChat);
+
+        sendButton.addEventListener('click', () => sendMessage());
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Prevent chat from closing when clicking inside
+        chatPopup.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Close chat when clicking outside
+        document.addEventListener('click', (e) => {
+            if (isOpen && !chatPopup.contains(e.target) && !chatButton.contains(e.target)) {
+                toggleChat();
+            }
+        });
+
+        // Close chat on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isOpen) {
+                toggleChat();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth < 480) {
+                chatPopup.style.width = '320px';
+            } else {
+                chatPopup.style.width = '380px';
+            }
+        });
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initChatbot);
+
+        // Add some sample quick actions for demonstration
+        function addQuickActions() {
+            const quickActions = [
+                { text: "🏠 Go to Homepage", action: () => searchPage('home') },
+                { text: "ℹ️ About Us", action: () => searchPage('about') },
+                { text: "💰 Donate", action: () => searchPage('donate') },
+                { text: "📞 Contact", action: () => searchPage('contact') }
+            ];
+            
+            // You can use these for future enhancements if needed
+        }
+
+        // Error handling for network issues
+        window.addEventListener('online', () => {
+            console.log('Connection restored');
+        });
+
+        window.addEventListener('offline', () => {
+            addMessage('🔌 You seem to be offline. Please check your connection!', false);
+        });
+    </script>
+</body>
+</html>
