@@ -153,6 +153,134 @@ WEBSITE_STRUCTURE = {
         "description": "Photo gallery of our work",
         "sections": []
     },
+    "projects": {
+        "url": "/projects",
+        "keywords": ["projects", "initiatives", "programs", "work", "activities", "schemes", "operations"],
+        "description": "Our projects and initiatives",
+        "sections": [
+            {"name": "Current Projects", "url": "/projects#current"},
+            {"name": "Completed Projects", "url": "/projects#completed"},
+            {"name": "Impact Stories", "url": "/projects#impact"}
+        ]
+    },
+    "privacy": {
+        "url": "/privacy",
+        "keywords": ["privacy", "privacy policy", "data protection", "terms", "legal", "policy", "data usage"],
+        "description": "Privacy policy and data protection",
+        "sections": []
+    },
+    "governance": {
+        "url": "/governance",
+        "keywords": ["governance", "leadership", "management", "administration", "board", "directors", "structure"],
+        "description": "Governance structure and leadership",
+        "sections": [
+            {"name": "Leadership Team", "url": "/governance#leadership"},
+            {"name": "Board of Directors", "url": "/governance#board"},
+            {"name": "Organizational Structure", "url": "/governance#structure"}
+        ]
+    },
+    "kargil_vijay_diwas": {
+        "url": "/kargilVijayDiwas",
+        "keywords": ["kargil", "vijay diwas", "kargil victory day", "defense", "military", "commemoration", "patriotic"],
+        "description": "Kargil Vijay Diwas commemoration",
+        "sections": []
+    },
+    "awareness": {
+        "url": "/awareness",
+        "keywords": ["awareness", "outreach", "community awareness", "social awareness", "campaigns", "education"],
+        "description": "Awareness and outreach programs",
+        "sections": [
+            {"name": "Community Programs", "url": "/awareness#community"},
+            {"name": "Social Campaigns", "url": "/awareness#campaigns"},
+            {"name": "Educational Outreach", "url": "/awareness#education"}
+        ]
+    },
+    "onboarding": {
+        "url": "/onboarding-orientation",
+        "keywords": ["onboarding", "orientation", "induction", "new member", "getting started", "introduction"],
+        "description": "Onboarding and orientation programs",
+        "sections": [
+            {"name": "New Member Orientation", "url": "/onboarding-orientation#orientation"},
+            {"name": "Program Introduction", "url": "/onboarding-orientation#introduction"},
+            {"name": "Getting Started Guide", "url": "/onboarding-orientation#guide"}
+        ]
+    },
+    "training_capacity": {
+        "url": "/training-capacity-building",
+        "keywords": ["training", "capacity building", "skill enhancement", "professional development", "workshops", "learning"],
+        "description": "Training and capacity building programs",
+        "sections": [
+            {"name": "Professional Training", "url": "/training-capacity-building#professional"},
+            {"name": "Skill Development", "url": "/training-capacity-building#skills"},
+            {"name": "Workshops", "url": "/training-capacity-building#workshops"}
+        ]
+    },
+    "assessment": {
+        "url": "/assessment-certification",
+        "keywords": ["assessment", "certification", "evaluation", "testing", "accreditation", "credentials", "examination"],
+        "description": "Assessment and certification programs",
+        "sections": [
+            {"name": "Assessment Process", "url": "/assessment-certification#process"},
+            {"name": "Certification Programs", "url": "/assessment-certification#programs"},
+            {"name": "Accreditation", "url": "/assessment-certification#accreditation"}
+        ]
+    },
+    "placement": {
+        "url": "/placement-enterprise",
+        "keywords": ["placement", "enterprise", "job placement", "business development", "entrepreneurship", "startup"],
+        "description": "Placement and enterprise development",
+        "sections": [
+            {"name": "Job Placement", "url": "/placement-enterprise#placement"},
+            {"name": "Enterprise Development", "url": "/placement-enterprise#enterprise"},
+            {"name": "Startup Support", "url": "/placement-enterprise#startup"}
+        ]
+    },
+    "alumni": {
+        "url": "/alumni-impact",
+        "keywords": ["alumni", "impact", "success stories", "graduates", "former participants", "network"],
+        "description": "Alumni network and impact stories",
+        "sections": [
+            {"name": "Success Stories", "url": "/alumni-impact#stories"},
+            {"name": "Alumni Network", "url": "/alumni-impact#network"},
+            {"name": "Impact Measurement", "url": "/alumni-impact#impact"}
+        ]
+    },
+    "feedback": {
+        "url": "/feedback-iteration",
+        "keywords": ["feedback", "iteration", "improvement", "suggestions", "reviews", "continuous improvement"],
+        "description": "Feedback and continuous improvement",
+        "sections": [
+            {"name": "Submit Feedback", "url": "/feedback-iteration#submit"},
+            {"name": "Process Improvement", "url": "/feedback-iteration#improvement"},
+            {"name": "Quality Enhancement", "url": "/feedback-iteration#quality"}
+        ]
+    },
+    "login": {
+        "url": "/login",
+        "keywords": ["login", "sign in", "authentication", "account", "member login", "portal"],
+        "description": "Member login portal",
+        "sections": []
+    },
+    "employee_dashboard": {
+        "url": "/employee-dashboard",
+        "keywords": ["employee dashboard", "staff portal", "employee portal", "internal dashboard", "staff login"],
+        "description": "Employee dashboard and portal",
+        "sections": [
+            {"name": "Dashboard Overview", "url": "/employee-dashboard#overview"},
+            {"name": "Staff Resources", "url": "/employee-dashboard#resources"},
+            {"name": "Internal Tools", "url": "/employee-dashboard#tools"}
+        ]
+    },
+    "event_registration": {
+        "url": "/event-register",
+        "keywords": ["event registration", "register for event", "sign up", "event signup", "registration form"],
+        "description": "Event registration portal",
+        "sections": [
+            {"name": "Registration Form", "url": "/event-register#form"},
+            {"name": "Event Details", "url": "/event-register#details"},
+            {"name": "Confirmation", "url": "/event-register#confirmation"}
+        ]
+    },
     "careers": {
         "url": "/careers",
         "keywords": ["careers", "jobs", "employment", "hiring", "work with us", "opportunities", "join us", "recruitment"],
@@ -409,3 +537,4 @@ def internal_error(error):
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
+
